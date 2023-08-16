@@ -56,7 +56,7 @@ public class AuthenticationService {
 
         if(userRepository.findByEmail(email).isPresent()) {
             authenticationResponse = AuthenticationResponse.builder()
-                    .accessToken("")
+                    .token("")
                     .message("Email taken!")
                     .build();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(authenticationResponse);
@@ -74,7 +74,7 @@ public class AuthenticationService {
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         authenticationResponse = AuthenticationResponse.builder()
-                .accessToken(jwtToken)
+                .token(jwtToken)
                 .message("User registered successfully")
                 .build();
 
@@ -94,7 +94,7 @@ public class AuthenticationService {
             );
         } catch (AuthenticationException e) {
             authenticationResponse = AuthenticationResponse.builder()
-                    .accessToken("")
+                    .token("")
                     .message("Invalid email or password!")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationResponse);
@@ -104,7 +104,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new UserNotFoundException("User does not exist"));
         String jwtToken = jwtService.generateToken(user);
         authenticationResponse = AuthenticationResponse.builder()
-                .accessToken(jwtToken)
+                .token(jwtToken)
                 .message("User signed in successfully")
                 .build();
 

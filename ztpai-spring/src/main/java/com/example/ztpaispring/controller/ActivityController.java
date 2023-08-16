@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/activities")
 public class ActivityController {
 
@@ -56,5 +56,8 @@ public class ActivityController {
         Activity addActivity= activityService.createNewActivity(activity);
         return new ResponseEntity<>(addActivity, HttpStatus.CREATED);
     }
-
+    @DeleteMapping("/delete/{activityId}")
+    public void deleteActivity(@PathVariable UUID activityId){
+        activityService.deleteActivity(activityId);
+    }
 }

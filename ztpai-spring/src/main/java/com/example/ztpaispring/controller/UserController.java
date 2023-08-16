@@ -2,6 +2,7 @@ package com.example.ztpaispring.controller;
 
 
 import com.example.ztpaispring.DTO.UserDTO;
+import com.example.ztpaispring.entity.Activity;
 import com.example.ztpaispring.entity.User;
 import com.example.ztpaispring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,6 +21,11 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 

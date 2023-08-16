@@ -15,9 +15,14 @@ const Pricing = () => {
 
     const [records,setRecords]=useState<Pricing []>([])
     useEffect(()=>{
-        fetch("pricing",{
-            headers:{'Content-Type':'application/json'},
-            method:"get"})
+        fetch("http://localhost:8080/pricing",{
+            method:'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+
+            }
+            })
             .then(res=>res.json())
             .then(data => setRecords(data))
             .catch(err => console.log(err))

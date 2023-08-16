@@ -36,7 +36,7 @@ public class User implements UserDetails {
     private UserDetail userDetail;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_role")
     private Role userRole;
     @JsonIgnore

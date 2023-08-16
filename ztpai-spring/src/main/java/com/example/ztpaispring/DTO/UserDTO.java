@@ -13,7 +13,7 @@ public class UserDTO {
     //private String roleName;
     private String phoneNumber;
 
-    public UserDTO(UUID id, String name, String surname, String email, String phoneNumber) {
+    public UserDTO(UUID id, String email, String name, String surname, String phoneNumber) {
         this.id = id;
         this.email = email;
         this.name = name;

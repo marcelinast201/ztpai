@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.util.UUID;
 @Entity
@@ -35,6 +36,7 @@ public class UserDetail {
 
 
     @JsonIgnore
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToOne(mappedBy = "userDetail")
     private User user;
 }

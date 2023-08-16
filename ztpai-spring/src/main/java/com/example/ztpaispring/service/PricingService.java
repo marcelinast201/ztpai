@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class PricingService {
     private final PricingRepository pricingRepository;
@@ -17,6 +19,14 @@ public class PricingService {
 
     public List<Pricing> getAllPrices() {
         return pricingRepository.findAll();
+
+    }
+
+    public void deletePrice(UUID priceId) {pricingRepository.deleteById(priceId);
+    }
+
+    public Pricing createNewPricing(Pricing pricing) {
+        return pricingRepository.save( pricing);
 
     }
 }

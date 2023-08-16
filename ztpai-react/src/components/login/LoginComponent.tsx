@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import logo from "../../img/logo.svg";
 import './login.css';
 import axios from "axios";
+import {SetToken} from "../../authorization/SetToken";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState('');
@@ -9,27 +10,40 @@ const LoginComponent = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setError('');
-        setLoading(true);
-        fetch("pricing",{
-            headers:{'Content-Type':'application/json'},
-            method:"get"})
-
-        try {
-            const response = await fetch("login",{
-                headers:{'Content-Type':'application/json'},
-                method:"post",
+        try{
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: "POST",
                 body: JSON.stringify({email, password}),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+
+                }
             });
 
-            setLoading(false);
-            window.location.href = "activities";
-        } catch (error) {
-            setError('Błąd logowania. Spróbuj ponownie.');
-            setLoading(false);
+            if(response.ok) {
+                const data = await response.json();
+                const token = data.token;
+                localStorage.setItem("token", token);
+                SetToken(token);
+                window.location.href = "/activities";
+            } else {
+                const errData = await response.json();
+                setError(errData.message);
+            }
+        } catch (e) {
+            setError('Network problem, try again later');
         }
     };
 
@@ -42,14 +56,12 @@ const LoginComponent = () => {
             </div>
             <div className="login-container">
                 <form className="login" onClick={handleSubmit}>
-                    <div className="messages">
-
-                    </div>
+                    {error && <div className="errorMessage">{error}</div>}
                     <input name="email"
                         type="text"
                         placeholder="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={handleEmailChange}
                         required>
 
                     </input>
@@ -57,7 +69,7 @@ const LoginComponent = () => {
                            type="password"
                            placeholder="password"
                            value={password}
-                           onChange={(e) => setPassword(e.target.value)}
+                           onChange={handlePasswordChange}
                            required>
 
                     </input>
