@@ -1,25 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import './graphic.css';
+import '../button/toggleButton.css'
 import Pricing from "../pricing/Pricing";
 import Activities from "../activities/Activities";
-export interface Activity{
-    id:number,
-    name:string,
-    day:string,
-    hour:string
+
+import ToggleButton from "../button/ToggleButton";
+
+export interface Activity {
+    id: string,
+    name: string,
+    day: string,
+    hour: string
 }
 
-const Graphic= ({category}:{category:string}) => {
-    const [data,setData]=useState<Activity []>([])
-    useEffect(()=>{
-        fetch(`activities/category/${category}`,{
-            headers:{'Content-Type':'application/json'},
-            method:"get"})
-            .then(res=>res.json())
+const Graphic = ({category}: { category: string }) => {
+    const [data, setData] = useState<Activity []>([])
+
+    useEffect(() => {
+        const url = category !== 'All'
+            ? `http://localhost:8080/api/activities/category/${category}`
+            : 'http://localhost:8080/api/activities';
+
+
+        fetch(url, {
+            headers: {'Content-Type': 'application/json'},
+            method: "get"
+        })
+            .then(res => res.json())
             .then(data => setData(data))
             .catch(err => console.log(err))
-    },[])
-    console.log(data)
+    }, [])
 
     return (
 
@@ -36,21 +46,20 @@ const Graphic= ({category}:{category:string}) => {
                             <th>Sign here!</th>
                         </tr>
                         {
-                            data.map(item =>(
+                            data.map(item => (
                                 <tr key={item.id}>
                                     <td>{item.name}</td>
                                     <td> {item.day}</td>
                                     <td> {item.hour}</td>
-                                    <td>
-                                        <button id="signUpWithdrawButton" value="add"><i className="fa-solid fa-plus"
-                                                                                         id="<?= $activity->getId() ?>"></i>
-                                        </button>
+                                    <td className="signUpWithdrawButton">
+                                        <div className="fa-solid fa-plus">
+                                            <ToggleButton activityId={item.id}  isAdded={false} />
+                                        </div>
                                     </td>
                                 </tr>
 
                             ))
                         }
-
 
 
                         </tbody>

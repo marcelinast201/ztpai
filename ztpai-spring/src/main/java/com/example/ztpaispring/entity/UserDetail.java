@@ -28,8 +28,6 @@ public class UserDetail {
     @Column(name = "surname")
     private String surname;
 
-//    @Column(name = "username")
-//    private String username;
 
     @Column(name = "phone")
     private String phone;

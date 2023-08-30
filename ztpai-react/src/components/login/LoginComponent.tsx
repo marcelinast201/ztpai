@@ -3,12 +3,14 @@ import logo from "../../img/logo.svg";
 import './login.css';
 import axios from "axios";
 import {SetToken} from "../../authorization/SetToken";
+import {User} from "../../interface/User";
+import {stringify} from "querystring";
 
 const LoginComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -35,8 +37,10 @@ const LoginComponent = () => {
             if(response.ok) {
                 const data = await response.json();
                 const token = data.token;
+                const userId = data.id
                 localStorage.setItem("token", token);
                 SetToken(token);
+               localStorage.setItem("userId",userId)
                 window.location.href = "/activities";
             } else {
                 const errData = await response.json();
@@ -55,6 +59,7 @@ const LoginComponent = () => {
                 <img src={logo} id="header-logo" alt="logo"/>
             </div>
             <div className="login-container">
+
                 <form className="login" onClick={handleSubmit}>
                     {error && <div className="errorMessage">{error}</div>}
                     <input name="email"
@@ -75,8 +80,9 @@ const LoginComponent = () => {
                     </input>
 
                     <button type="submit" className="login">Log in</button>
-                    <a href="register" className="join">Join now</a>
+
                 </form>
+                <a href="register" className="join">Join now</a>
             </div>
         </div>
 

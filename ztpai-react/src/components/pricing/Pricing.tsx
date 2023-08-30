@@ -15,7 +15,7 @@ const Pricing = () => {
 
     const [records,setRecords]=useState<Pricing []>([])
     useEffect(()=>{
-        fetch("http://localhost:8080/pricing",{
+        fetch("http://localhost:8080/api/pricing",{
             method:'GET',
             headers: {
                 'Accept': 'application/json',
@@ -51,7 +51,7 @@ const Pricing = () => {
                         records.map(item =>(
                             <tr key={item.id}>
                                 <td>{item.passName}</td>
-                                <td> {item.price}</td>
+                                <td> {item.price} zł</td>
                             </tr>
 
                         ))

@@ -4,6 +4,7 @@ package com.example.ztpaispring.controller;
 import com.example.ztpaispring.DTO.UserDTO;
 import com.example.ztpaispring.entity.Activity;
 import com.example.ztpaispring.entity.User;
+import com.example.ztpaispring.exception.UserAlreadyRegisteredException;
 import com.example.ztpaispring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -22,6 +24,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -48,16 +51,37 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @PostMapping("/{userId}/edit")
-    public User editUser(@PathVariable UUID userId,@RequestBody User user){
+    public User editUser(@PathVariable UUID userId, @RequestBody User user) {
         return userService.editUser(user);
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public void deleteUser(@PathVariable UUID userId){
-        userService.deleteUser(userId);
+    @PostMapping("/{userId}/assignActivity")
+    public ResponseEntity<String> assignUserToActivity(@PathVariable UUID userId, @RequestBody String activityId) {
+        try {
+            userService.assignUserToActivity(userId, UUID.fromString(activityId));
+
+            return ResponseEntity.ok("User assigned to activity successfully");
+        } catch (UserAlreadyRegisteredException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
+    @GetMapping("/{userId}/activities")
+    public ResponseEntity<List<Activity>> getUserAssignedActivities(@PathVariable UUID userId) {
+        List<Activity> activities = userService.getUserAssignedActivities(userId);
+        return ResponseEntity.ok(activities);
+    }
+    @PostMapping("/{userId}/removeActivity")
+    public ResponseEntity<String> removeUserFromActivity(@PathVariable UUID userId, @RequestBody String activityId) {
+        userService.removeActivityFromUser(userId,UUID.fromString(activityId));
+        return ResponseEntity.ok("Activity removed from user");
+    }
+    @DeleteMapping("/delete/{userId}")
+    public void deleteUser(@PathVariable UUID userId) {
+        userService.deleteUser(userId);
+    }
 
 
 }

@@ -12,7 +12,7 @@ const Buypass = () => {
 
     const [records,setRecords]=useState<Pricing []>([])
     useEffect(()=>{
-        fetch("pricing",{
+        fetch("http://localhost:8080/api/pricing",{
             headers:{'Content-Type':'application/json'},
             method:"get"})
             .then(res=>res.json())

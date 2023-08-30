@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import all from "../../img/all.svg";
 import run from "../../img/run.svg";
 import dance from "../../img/dance.svg";

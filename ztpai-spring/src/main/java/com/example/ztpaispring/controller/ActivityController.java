@@ -1,21 +1,18 @@
 package com.example.ztpaispring.controller;
 
 import com.example.ztpaispring.entity.Activity;
-import com.example.ztpaispring.repository.ActivityRepository;
 import com.example.ztpaispring.service.ActivityService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/activities")
+@RequestMapping("/api/activities")
 public class ActivityController {
 
     private final ActivityService activityService;
@@ -24,6 +21,7 @@ public class ActivityController {
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
+
 
     @GetMapping
     public ResponseEntity<List<Activity>> getAllActivities() {
@@ -56,8 +54,15 @@ public class ActivityController {
         Activity addActivity= activityService.createNewActivity(activity);
         return new ResponseEntity<>(addActivity, HttpStatus.CREATED);
     }
+//    @PostMapping("/{userId}/assign")
+//    public ResponseEntity<String> assignUserToActivity(@PathVariable UUID userId, @RequestBody String activityId) {
+//        activityService.assignUserToActivity(userId, UUID.fromString(activityId));
+//        return ResponseEntity.ok("User assigned to activity successfully");
+//    }
+
     @DeleteMapping("/delete/{activityId}")
     public void deleteActivity(@PathVariable UUID activityId){
         activityService.deleteActivity(activityId);
     }
+
 }

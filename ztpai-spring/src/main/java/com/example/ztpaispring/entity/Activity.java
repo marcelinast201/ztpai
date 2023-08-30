@@ -1,6 +1,7 @@
 package com.example.ztpaispring.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,13 +34,12 @@ public class Activity {
     @Column(name = "category")
     private String category;
 
+
+
+    @ManyToMany(mappedBy = "usersActivity")
+    @JsonManagedReference
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "workout_activity",
-            joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_activity")
-    )
-    private List<User> activityUsers;
+    List<User> activityUsers;
+
 
 }

@@ -32,11 +32,11 @@ const Register = () => {
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
         checkPassword(password);
-        checkConfirmPasswd(password,confirmPassword)
+
     };
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhone(e.target.value);
-        //checkPhone(phone);
+        checkPhone(phone);
     };
 
     const handleConfirmPasswdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +57,17 @@ const Register = () => {
     const checkSurname = (surname:string) => {
         if (surname === '') {
             setError("Surname is required");
+        } else {
+            setError('');
+        }
+    }
+    const checkPhone = (phone:string) => {
+        const regex = /^[0-9]+$/;
+        if (!regex.test(phone)) {
+            setError("No letters allowed in phone number")
+        }
+        if (phone === '') {
+            setError("Phone is required");
         } else {
             setError('');
         }

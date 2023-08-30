@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/pricing")
+@RequestMapping("/api/pricing")
 public class PricingController {
     private final PricingService pricingService;
 
