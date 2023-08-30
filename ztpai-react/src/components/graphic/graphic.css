@@ -24,17 +24,6 @@ body {
 .graphic table tr:nth-child(2n){
     background: #f2f2f2;
 }
-.signUpWithdrawButton {
-    background: #2EC721;
-    border-radius: 10px;
-    border: none;
-    height: 35px;
-    width: 70px;
-    margin-bottom: 20px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 

@@ -26,8 +26,8 @@ public class Pass {
     @Column(name = "expires")
     private Date expires;
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="id_pricing",referencedColumnName = "id_pricing")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_pricing", referencedColumnName = "id_pricing")
     private Pricing pricing;
     @JsonIgnore
 

@@ -5,9 +5,10 @@ import Pricing from "../pricing/Pricing";
 import Activities from "../activities/Activities";
 
 import ToggleButton from "../button/ToggleButton";
+import {UUID} from "crypto";
 
 export interface Activity {
-    id: string,
+    id: number,
     name: string,
     day: string,
     hour: string
@@ -51,9 +52,9 @@ const Graphic = ({category}: { category: string }) => {
                                     <td>{item.name}</td>
                                     <td> {item.day}</td>
                                     <td> {item.hour}</td>
-                                    <td className="signUpWithdrawButton">
+                                    <td className="sign">
                                         <div className="fa-solid fa-plus">
-                                            <ToggleButton activityId={item.id}  isAdded={false} />
+                                            <ToggleButton activityId={item.id}  isAdded={false}/>
                                         </div>
                                     </td>
                                 </tr>

@@ -22,6 +22,7 @@ const Activities = () => {
     const [activityDetails, setActivityDetails]=useState(false);
 
 
+
     const activities1 = [
         {
             name: "All", source: all

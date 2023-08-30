@@ -6,9 +6,11 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons'
 import Navigation from "../navigation/Navigation";
 import MobileNavigation from "../navigation/MobileNavigation";
 import Pricing from "../pricing/Pricing";
+import {PassInterface} from "../account/Account";
 
 
 const Buypass = () => {
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
 
     const [records,setRecords]=useState<Pricing []>([])
     useEffect(()=>{
@@ -20,6 +22,22 @@ const Buypass = () => {
             .catch(err => console.log(err))
     },[])
 
+    const handleAddButtonClick = (item: Pricing) => {
+
+        const userId = localStorage.getItem('userId');
+        const url = `http://localhost:8080/api/pass/${userId}/assign`;
+
+        fetch(url, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/text' },
+            body: `${item.id}`
+        })
+            .then((data) => {
+                console.log('Response from server:', data);
+                setPaymentSuccess(true);
+            })
+            .catch((error) => console.error('Error:', error));
+    };
 
     return (
 
@@ -29,9 +47,11 @@ const Buypass = () => {
 
             <main>
                 <MobileNavigation/>
-
+                {paymentSuccess ? <div className="successPayment"><p>The payment went smoothly</p>
+                    </div>:(
                 <section className="pass">
                     <h1>Select a pass</h1>
+
                     <div className="passRow">
 
                         {
@@ -40,7 +60,7 @@ const Buypass = () => {
                                     <h2>{item.passName}</h2>
                                     <div>
                                     <h3> {item.price}PLN</h3>
-                                        <button id="buynow" value="add"><FontAwesomeIcon icon={faPlus}/></button>
+                                        <button id="buynow" value="add" onClick={() => handleAddButtonClick(item)}>Buy now</button>
 
                                     </div>
                                 </div>
@@ -51,6 +71,7 @@ const Buypass = () => {
                     </div>
 
                 </section>
+                )}
             </main>
         </div>
 

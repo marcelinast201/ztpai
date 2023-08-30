@@ -12,7 +12,24 @@ main{
 .mobile-header {
     display: none;
 }
-
+.successPayment{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    border: 1px solid #2EC721;
+    border-radius: 12px;
+    width: 500px;
+    height: 300px;
+    font-size: 38px;
+    background-color: #2EC721;
+}
+.successPayment p{
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
 .passRow {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

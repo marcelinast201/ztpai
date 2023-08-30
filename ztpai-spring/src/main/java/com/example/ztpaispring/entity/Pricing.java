@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -27,7 +28,7 @@ public class Pricing {
 
     @Column(name = "term")
     private Integer term;
-    @OneToOne(mappedBy = "pricing")
-    private Pass pass;
+    @OneToMany(mappedBy = "pricing")
+    private List<Pass> passes;
 
 }
