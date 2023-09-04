@@ -1,0 +1,18 @@
+.admin table{
+    margin-top: 100px;
+}
+.admin table th{
+    background-color:#2EC721 ;
+    color: white;
+    width:700px;
+    height: 50px;
+    font-size: 19px;
+}
+.admin table td{
+    height: 30px;
+    padding: 15px 10px;
+    font-size: 17px;
+}
+.admin table tr:nth-child(2n){
+    background: #f2f2f2;
+}

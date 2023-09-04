@@ -129,7 +129,9 @@ const Register = () => {
                 if(response.ok) {
                     const data = await response.json();
                     const token = data.token;
+                    const userId = data.id
                     localStorage.setItem("token", token);
+                    localStorage.setItem("userId",userId)
                     SetToken(token);
                     window.location.href = '/activities';
                     setMessage('Registration successful');
@@ -144,26 +146,7 @@ const Register = () => {
             setMessage(`Registration error: ${error.message}`);
         }
 
-          //  const content = await rawResponse.json();
 
-            //console.log(content);
-
-        // try {
-        //     const response = await axios.post('http://localhost:8080/register', {
-        //         email: email,
-        //         password: password,
-        //         name: name,
-        //         surname: surname,
-        //         phone: phone
-        //     });
-        //
-        //     setMessage(response.data.message);
-        //     setAccessToken(response.data.accessToken);
-        // } catch (error) {
-        //     console.error('Error registering:', error);
-        //     setMessage('An error occurred during registration.');
-        //     setAccessToken('');
-        // }
     };
 
 

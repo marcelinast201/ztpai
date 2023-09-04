@@ -6,7 +6,6 @@ import com.example.ztpaispring.entity.Role;
 import com.example.ztpaispring.entity.User;
 import com.example.ztpaispring.entity.UserDetail;
 import com.example.ztpaispring.repository.RoleRepository;
-//import com.example.ztpaispring.repository.UserDetailsRepository;
 import com.example.ztpaispring.repository.UserRepository;
 import com.example.ztpaispring.service.JwtService;
 import com.example.ztpaispring.exception.UserNotFoundException;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-//    private final UserDetailsRepository userDetailsRepository;
+
 
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -37,22 +36,14 @@ public class AuthenticationService {
     @Transactional
     public  ResponseEntity<AuthenticationResponse> register(RegisterRequest request) {
         String email = request.getEmail();
-        //String phone = request.getPhone();
+
         AuthenticationResponse authenticationResponse;
         Role defaultRole = roleRepository.findByRole("user");
-
-
         UserDetail userDetail = new UserDetail();
         userDetail.setName(request.getName());
         userDetail.setSurname(request.getSurname());
         userDetail.setPhone(request.getPhone());
-//        if(userDetailsRepository.findByPhone(phone).isPresent()) {
-//            authenticationResponse = AuthenticationResponse.builder()
-//                    .accessToken("")
-//                    .message("Phone number taken!")
-//                    .build();
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body(authenticationResponse);
-//        }
+
 
         if(userRepository.findByEmail(email).isPresent()) {
             authenticationResponse = AuthenticationResponse.builder()
@@ -105,10 +96,12 @@ public class AuthenticationService {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User does not exist"));
+        Role roles = user.getUserRole();
         String jwtToken = jwtService.generateToken(user);
         authenticationResponse = AuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
+                .role(roles.getRole())
                 .message("User signed in successfully")
                 .build();
 

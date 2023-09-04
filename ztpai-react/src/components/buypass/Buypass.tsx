@@ -12,15 +12,16 @@ import {PassInterface} from "../account/Account";
 const Buypass = () => {
     const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-    const [records,setRecords]=useState<Pricing []>([])
-    useEffect(()=>{
-        fetch("http://localhost:8080/api/pricing",{
-            headers:{'Content-Type':'application/json'},
-            method:"get"})
-            .then(res=>res.json())
+    const [records, setRecords] = useState<Pricing []>([])
+    useEffect(() => {
+        fetch("http://localhost:8080/api/pricing", {
+            headers: {'Content-Type': 'application/json'},
+            method: "get"
+        })
+            .then(res => res.json())
             .then(data => setRecords(data))
             .catch(err => console.log(err))
-    },[])
+    }, [])
 
     const handleAddButtonClick = (item: Pricing) => {
 
@@ -29,7 +30,7 @@ const Buypass = () => {
 
         fetch(url, {
             method: 'post',
-            headers: { 'Content-Type': 'application/text' },
+            headers: {'Content-Type': 'application/text'},
             body: `${item.id}`
         })
             .then((data) => {
@@ -40,42 +41,33 @@ const Buypass = () => {
     };
 
     return (
-
-
         <div className="base-container">
             <Navigation/>
-
             <main>
                 <MobileNavigation/>
                 {paymentSuccess ? <div className="successPayment"><p>The payment went smoothly</p>
-                    </div>:(
-                <section className="pass">
-                    <h1>Select a pass</h1>
-
-                    <div className="passRow">
-
-                        {
-                            records.map(item =>(
-                                <div id="pass-1" key={item.id}>
-                                    <h2>{item.passName}</h2>
-                                    <div>
-                                    <h3> {item.price}PLN</h3>
-                                        <button id="buynow" value="add" onClick={() => handleAddButtonClick(item)}>Buy now</button>
-
+                </div> : (
+                    <section className="pass">
+                        <h1>Select a pass</h1>
+                        <div className="passRow">
+                            {
+                                records.map(item => (
+                                    <div id="pass-1" key={item.id}>
+                                        <h2>{item.passName}</h2>
+                                        <div>
+                                            <h3> {item.price}PLN</h3>
+                                            <button id="buynow" value="add"
+                                                    onClick={() => handleAddButtonClick(item)}>Buy now
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-
-                            ))
-                        }
-
-                    </div>
-
-                </section>
+                                ))
+                            }
+                        </div>
+                    </section>
                 )}
             </main>
         </div>
-
-
     )
 };
 export default Buypass;

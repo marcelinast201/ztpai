@@ -7,13 +7,14 @@ import '../pricing/pricing.css'
 import {UUID} from "crypto";
 import Navigation from "../navigation/Navigation";
 import MobileNavigation from "../navigation/MobileNavigation";
+import Edit from "./Edit";
 
 export interface UserData {
     id: UUID,
     email: string,
     name: string,
     surname: string,
-    phone: string
+    phoneNumber: string
 }
 
 export interface DataType {
@@ -21,14 +22,16 @@ export interface DataType {
     pass: [],
     user?: UserData
 }
-export interface ActivityInterface{
-    id:number,
-    name:string,
-    day:string,
-    hour:string
+
+export interface ActivityInterface {
+    id: number,
+    name: string,
+    day: string,
+    hour: string
 }
-export interface PassInterface{
-    id:number,
+
+export interface PassInterface {
+    id: number,
     expires: Date,
 
 }
@@ -49,11 +52,10 @@ const Account = () => {
             email: "",
             name: "",
             surname: "",
-            phone: ""
+            phoneNumber: ""
         }
 
     })
-    //const date = new Date(records.pass.);
 
 
     useEffect(() => {
@@ -75,11 +77,12 @@ const Account = () => {
                 response: "Cannot connect with server"
             });
         });
-    },[]);
+    }, []);
 
     function Logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
+        localStorage.removeItem("role");
         window.location.href = '/login';
     }
 
@@ -99,8 +102,8 @@ const Account = () => {
                             <div className="accountColumns">
                                 <div className="accountColumn">
                                     <img alt="photo" className="photo" src={profil}/>
-                                    <a href="editprofile" className="button"/> <img alt="edit" className="edit"
-                                                                                    src={edit}/>
+                                    {/*<a href="edit" className="button"> <img alt="edit" className="edit"*/}
+                                    {/*                                        src={edit}/></a>*/}
 
 
                                 </div>
@@ -113,8 +116,7 @@ const Account = () => {
                                 </label>
 
                             </span>
-                                        <p className="name">{records.user?records.user.name:""}</p>
-                                        {/*//  <input name="name" type="text"></input>*/}
+                                        <p className="name">{records.user ? records.user.name : ""}</p>
 
                                         <div className="line"></div>
                                     </div>
@@ -122,8 +124,7 @@ const Account = () => {
                             <span className="field-label-wrapper">
                                 <label className="field-label">Surname </label>
                             </span>
-                                        {/*<input name="surname" type="text"/>*/}
-                                        <p className="surname">{records.user?records.user.surname:""}</p>
+                                        <p className="surname">{records.user ? records.user.surname : ""}</p>
 
                                         <div className="line"></div>
                                     </div>
@@ -133,9 +134,7 @@ const Account = () => {
                                     E-mail
                                 </label>
                             </span>
-                                        <p className="email">{records.user?records.user.email:""}</p>
-
-                                        {/*<input name="email" type="text"/>*/}
+                                        <p className="email">{records.user ? records.user.email : ""}</p>
                                         <div className="line"></div>
                                     </div>
 
@@ -143,18 +142,12 @@ const Account = () => {
                                <span className="field-label-wrapper">
                                 <label className="field-label">Phone</label>
                             </span>
-                                        <p className="phone">{records.user?records.user.phone:""}</p>
+                                        <p className="phone">{records.user ? records.user.phoneNumber : ""}</p>
 
-                                        {/*<input name="phone" type="tel"/>*/}
                                         <div className="line"></div>
                                     </div>
                                     <div className="field">
-
-
-
                                         <div className="field">
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +158,7 @@ const Account = () => {
                     <section className="useractivities">
                         <h2>My activities</h2>
                         <div className="my-activities">
-                            <table >
+                            <table>
                                 <tbody>
                                 <tr>
                                     <th>Activity</th>
@@ -173,7 +166,7 @@ const Account = () => {
                                     <th>Hour</th>
                                 </tr>
                                 {
-                                    records.activity.map((activityItem:ActivityInterface) =>(
+                                    records.activity.map((activityItem: ActivityInterface) => (
                                         <tr key={activityItem.id}>
                                             <td>{activityItem.name}</td>
                                             <td> {activityItem.day} </td>
@@ -192,26 +185,26 @@ const Account = () => {
                     <section className="passes">
                         <h2>My passes</h2>
                         <div className="my-passes">
-                            <table >
+                            <table>
                                 <tbody>
                                 <tr>
                                     <th>Expire</th>
                                 </tr>
                                 {
-                                    records.pass.map((passItem:PassInterface) =>{
-                                    const expirationDate = new Date(passItem.expires);
-                                    const currentDate = new Date();
+                                    records.pass.map((passItem: PassInterface) => {
+                                        const expirationDate = new Date(passItem.expires);
+                                        const currentDate = new Date();
 
-                                    if (expirationDate > currentDate) {
-                                    return (
-                                    <tr key={passItem.id}>
-                                    <td>{expirationDate.toLocaleDateString()}</td>
-                                    </tr>
-                                    );
-                                }
+                                        if (expirationDate > currentDate) {
+                                            return (
+                                                <tr key={passItem.id}>
+                                                    <td>{expirationDate.toLocaleDateString()}</td>
+                                                </tr>
+                                            );
+                                        }
 
-                                    return null;
-                                })}
+                                        return null;
+                                    })}
                                 </tbody>
                             </table>
                         </div>

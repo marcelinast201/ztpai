@@ -2,11 +2,11 @@ package com.example.ztpaispring.service;
 
 import com.example.ztpaispring.DTO.UserDTO;
 import com.example.ztpaispring.entity.Activity;
-import com.example.ztpaispring.entity.Pass;
 import com.example.ztpaispring.entity.User;
 import com.example.ztpaispring.entity.UserDetail;
 import com.example.ztpaispring.repository.ActivityRepository;
 import com.example.ztpaispring.repository.PassRepository;
+import com.example.ztpaispring.repository.UserDetailsRepository;
 import com.example.ztpaispring.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +14,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     public static final String USER_NOT_FOUND = "User with given email not found.";
     public static final String EMAIL_ALREADY_EXISTS = "User with this email already exists";
     private final UserRepository userRepository;
+    private final UserDetailsRepository userDetailsRepository;
     private final ActivityRepository activityRepository;
     private final PassRepository passRepository;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, ActivityRepository activityRepository, PassRepository passRepository) {
+    public UserService(UserRepository userRepository, UserDetailsRepository userDetailsRepository, ActivityRepository activityRepository, PassRepository passRepository) {
         this.userRepository = userRepository;
+        this.userDetailsRepository = userDetailsRepository;
         this.activityRepository = activityRepository;
         this.passRepository = passRepository;
     }
@@ -39,6 +42,9 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+    public List<UserDetail> getAllUsersDetails() {
+        return userDetailsRepository.findAll();
+    }
 
     public User getUserById(UUID userId) {
         return userRepository.findById(userId).orElse(null);
@@ -46,7 +52,8 @@ public class UserService {
 
     public User editUser(User user) {
         User editUser = userRepository.findById(user.getId()).orElseThrow();
-        editUser.setEmail(user.getEmail());
+        if(editUser.getEmail()!=null){
+        editUser.setEmail(user.getEmail());}
         editUser.setPassword(user.getPassword());
 
         UserDetail userDetails = editUser.getUserDetail();
@@ -93,6 +100,12 @@ public class UserService {
                 user.getUserDetail().getPhone());
     }
 
+    public List<UserDTO> getAllUserDTOs() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertUserToUserDTO)
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -15,5 +15,6 @@ public class AuthenticationResponse {
 
     private String token;
     private UUID id;
+    private String role;
     private String message;
 }

@@ -132,7 +132,7 @@ accounth2 {
     background: #f2f2f2;
 }
 
-.logout{
+.logout, .save{
     position: absolute;
     right: 50px;
     bottom: 10px;
